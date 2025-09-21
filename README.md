@@ -2,7 +2,7 @@
 
 **Course:** DSA612S – Distributed Systems and Applications  
 **Assignment:** 1 – RESTful APIs  
-**Author:** [Your Name]  
+**Author:** Litwayi Dumi 223020001 (Part Time Group)  
 **Date:** September 2025
 
 ---
@@ -24,4 +24,5 @@ The service runs on **http://localhost:8080/assets**.
 ---
 
 ## Project Structure
+
 
