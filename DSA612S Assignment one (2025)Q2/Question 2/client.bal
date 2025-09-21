@@ -3,10 +3,8 @@ import ballerina/grpc;
 import gen.carrental;
 
 public function main() returns error? {
-    // Connect to the CarRental gRPC server
     carrental:CarRentalClient client = check new (http://localhost:9090);
 
-    // Add a car to the system
     carrental:AddCarRequest carReq = {
         car: {
             plate: "N1125W",
@@ -21,8 +19,7 @@ public function main() returns error? {
     var carResponse = check client->AddCar(carReq);
     io:println(AddCar response:, carResponse);
 
-    // Create users
-    var userStream = check client->CreateUsers();
+       var userStream = check client->CreateUsers();
     check userStream.send({ 
         username: "johnny", 
         role: carrental:Role::CUSTOMER, 
@@ -38,7 +35,6 @@ public function main() returns error? {
     var usersResponse = check userStream.complete();
     io:println("CreateUsers response:", usersResponse);
 
-    // List available cars
     var availableCars = check client->ListAvailableCars({ filter: "Toyota" });
     while true {
         var car = availableCars.next();
@@ -49,7 +45,6 @@ public function main() returns error? {
         }
     }
 
-    // Add car to reservation cart
     var cartResponse = check client->AddToCart({
         username: "johnny",
         plate: "N1125W",
@@ -58,7 +53,7 @@ public function main() returns error? {
     });
     io:println("AddToCart response:", cartResponse);
 
-    // Place the reservation
     var reservationResponse = check client->PlaceReservation({ username: "johnny" });
     io:println("PlaceReservation response:", reservationResponse);
+
 }
