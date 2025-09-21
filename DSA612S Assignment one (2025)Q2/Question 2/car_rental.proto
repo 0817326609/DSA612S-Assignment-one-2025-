@@ -4,13 +4,12 @@ package carrental;
 
 option go_package = "carrentalpb";
 
-// User roles
+
 enum Role {
   CUSTOMER = 0;
   ADMIN = 1;
 }
 
-// Car status values
 enum CarStatus {
   AVAILABLE = 0;
   UNAVAILABLE = 1;
@@ -27,13 +26,11 @@ message Car {
   CarStatus status = 7;
 }
 
-// Standard operation response
 message OpResponse {
   bool ok = 1;
   string message = 2;
 }
 
-// Add car
 message AddCarRequest {
   Car car = 1;
 }
@@ -43,7 +40,6 @@ message AddCarResponse {
   string message = 3;
 }
 
-// User info
 message User {
   string username = 1;
   Role role = 2;
@@ -51,7 +47,6 @@ message User {
   string email = 4;
 }
 
-// Update car
 message UpdateCarRequest {
   string plate = 1;
   Car updates = 2;
@@ -62,7 +57,6 @@ message UpdateCarResponse {
   Car car = 3;
 }
 
-// Remove car
 message RemoveCarRequest {
   string plate = 1;
 }
@@ -71,12 +65,10 @@ message RemoveCarResponse {
   string message = 2;
 }
 
-// List available cars
 message ListAvailableRequest {
   string filter = 1; // optional text filter (make, model, plate, year)
 }
 
-// Search car
 message SearchCarRequest {
   string plate = 1;
 }
@@ -86,7 +78,6 @@ message SearchCarResponse {
   string message = 3;
 }
 
-// Add to cart
 message AddToCartRequest {
   string username = 1;
   string plate = 2;
@@ -98,7 +89,6 @@ message AddToCartResponse {
   string message = 2;
 }
 
-// Reservation items
 message ReservationItem {
   string plate = 1;
   string start_date = 2;
@@ -106,7 +96,6 @@ message ReservationItem {
   double price = 4;
 }
 
-// Place reservation
 message PlaceReservationRequest {
   string username = 1;
 }
@@ -116,7 +105,6 @@ message PlaceReservationResponse {
   repeated ReservationItem reservations = 3;
 }
 
-// Reservation record
 message Reservation {
   string id = 1;
   string username = 2;
@@ -142,4 +130,5 @@ service CarRental {
   rpc SearchCar(SearchCarRequest) returns (SearchCarResponse);
   rpc AddToCart(AddToCartRequest) returns (AddToCartResponse);
   rpc PlaceReservation(PlaceReservationRequest) returns (PlaceReservationResponse);
+
 }
