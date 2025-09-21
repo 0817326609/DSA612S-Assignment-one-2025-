@@ -3,18 +3,15 @@ import ballerina/time;
 import ballerina/grpc;
 import gen.carrental;
 
-// In-memory stores
 map<carrental:Car> cars = {};
 map<string, carrental:User> users = {};
 map<string, carrental:Reservation> reservations = {};
 map<string, carrental:ReservationItem[]> carts = {};
 
-// Helper: parse date from yyyy-MM-dd
 function parseDate(string d) returns time:Utc|error {
     return time:parse(d, "yyyy-MM-dd");
 }
 
-// Helper: calculate days between two dates
 function daysBetween(string start, string end) returns int|error {
     time:Utc s = check parseDate(start);
     time:Utc e = check parseDate(end);
@@ -29,10 +26,8 @@ function daysBetween(string start, string end) returns int|error {
     return days;
 }
 
-// Service implementation
 service object CarRentalService {
 
-    // Add a new car
     remote function AddCar(carrental:AddCarRequest req) 
         returns carrental:AddCarResponse|error {
         carrental:Car c = req.car;
@@ -47,7 +42,6 @@ service object CarRentalService {
         return { ok: true, plate: c.plate, message: "car created" };
     }
 
-    // Create users (client-streaming)
     remote function CreateUsers(stream<carrental:User, error?> userStream) 
         returns carrental:OpResponse|error {
         int count = 0;
@@ -69,7 +63,6 @@ service object CarRentalService {
         return { ok: true, message: "created " + count.toString() + " users" };
     }
 
-    // List available cars (server streaming)
     remote function ListAvailableCars(carrental:ListAvailableRequest req)
         returns stream<carrental:Car, error?>|error {
         stream<carrental:Car, error?> s = new;
@@ -90,7 +83,6 @@ service object CarRentalService {
         return s;
     }
 
-    // Add to cart
     remote function AddToCart(carrental:AddToCartRequest req) 
         returns carrental:AddToCartResponse|error {
         if !users.hasKey(req.username) {
@@ -129,7 +121,6 @@ service object CarRentalService {
         return { ok: true, message: "added to cart" };
     }
 
-    // Place reservation
     remote function PlaceReservation(carrental:PlaceReservationRequest req) 
         returns carrental:PlaceReservationResponse|error {
         string username = req.username;
@@ -179,4 +170,5 @@ public function main() returns error? {
 
     // Keep the server running
     check runtime:sleep(1000 * 60 * 60 * 24);
+
 }
